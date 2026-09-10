@@ -1,0 +1,51 @@
+# Node / Frontend
+frontend/node_modules/
+frontend/.vite/
+frontend/dist-ssr/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+backend/__pycache__/
+backend/*/__pycache__/
+*.so
+.Python
+backend/build/
+backend/develop-eggs/
+backend/dist/
+backend/downloads/
+backend/eggs/
+backend/.eggs/
+backend/lib/
+backend/lib64/
+backend/parts/
+backend/sdist/
+backend/var/
+backend/wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+.venv/
+ENV/
+backend/venv/
+backend/.venv/
+
+# Environment Variables & Secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
