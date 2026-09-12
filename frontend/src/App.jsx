@@ -8,6 +8,66 @@ import PortfolioModal from './components/PortfolioModal'
 import MockInterviewModal from './components/MockInterviewModal'
 import { Sparkles, Terminal, Rocket, CheckCircle2, Award, Zap, BookOpen, Layers } from 'lucide-react'
 
+const DEFAULT_ROADMAP = {
+  "roadmap_title": "Mastering AWS Bedrock AgentCore & Strands Agent Orchestration",
+  "estimated_duration": "7 Days (Micro-Sprints)",
+  "difficulty": "Intermediate",
+  "target_skills": ["AWS Bedrock", "Strands Agents SDK", "Tool Invocation", "Self-Healing State", "Sandboxed Execution"],
+  "milestones": [
+    {
+      "id": "m1",
+      "title": "Milestone 1: Strands Agent Core & Autonomous Tool Definitions",
+      "description": "Learn to define agent tools, schema validation, and structured JSON output loops.",
+      "labs": [
+        {
+          "id": "lab-101",
+          "title": "Lab 1.1: Building a Tool-Calling Strands Agent",
+          "summary": "Implement a Python agent that validates input parameters and executes a mathematical computation tool.",
+          "difficulty": "Beginner",
+          "language": "python",
+          "starter_code": "def agent_tool_calculator(operation: str, a: float, b: float) -> dict:\n    # Implement mathematical execution logic\n    # Supported operations: 'add', 'subtract', 'multiply', 'divide'\n    pass\n",
+          "instructions": "Complete `agent_tool_calculator` to safely handle 'add', 'subtract', 'multiply', and 'divide'. Include zero-division protection.",
+          "test_code": "assert agent_tool_calculator('add', 5, 3)['result'] == 8\nassert agent_tool_calculator('divide', 10, 2)['result'] == 5\nassert 'error' in agent_tool_calculator('divide', 5, 0)\n"
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "title": "Milestone 2: Bedrock AgentCore & Prompt Chaining",
+      "description": "Construct multi-turn reasoning loops that pass context dynamically between agents.",
+      "labs": [
+        {
+          "id": "lab-102",
+          "title": "Lab 2.1: Multi-Turn Context Memory Manager",
+          "summary": "Build a sliding-window conversational memory manager for agent state tracking.",
+          "difficulty": "Intermediate",
+          "language": "python",
+          "starter_code": "class AgentMemory:\n    def __init__(self, max_turns: int = 5):\n        self.max_turns = max_turns\n        self.history = []\n\n    def add_turn(self, role: str, content: str):\n        # Store turn and maintain sliding window\n        pass\n\n    def get_context_window(self) -> list:\n        # Return formatted messages\n        return self.history\n",
+          "instructions": "Ensure `add_turn` only keeps the latest `max_turns` messages.",
+          "test_code": "mem = AgentMemory(max_turns=2)\nmem.add_turn('user', 'hello')\nmem.add_turn('assistant', 'hi')\nmem.add_turn('user', 'what is cloud?')\nassert len(mem.get_context_window()) == 2\nassert mem.get_context_window()[0]['content'] == 'hi'\n"
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "title": "Milestone 3: Autonomous Diagnostic Evaluation & GitHub Portfolio Assembly",
+      "description": "Create automated test evaluation pipelines and package production artifacts.",
+      "labs": [
+        {
+          "id": "lab-103",
+          "title": "Lab 3.1: Autonomous Error Stack Trace Parser",
+          "summary": "Parse raw traceback strings and extract offending line numbers and error types.",
+          "difficulty": "Advanced",
+          "language": "python",
+          "starter_code": "def parse_agent_traceback(tb_string: str) -> dict:\n    # Extract error_type and line_number from traceback\n    return {'error_type': 'Unknown', 'line': 0}\n",
+          "instructions": "Parse Python tracebacks to return `{'error_type': 'ZeroDivisionError', 'line': 14}`.",
+          "test_code": "sample_tb = '''Traceback (most recent call last):\\n  File \"script.py\", line 14, in <module>\\nZeroDivisionError: division by zero'''\nres = parse_agent_traceback(sample_tb)\nassert res['error_type'] == 'ZeroDivisionError'\nassert res['line'] == 14\n"
+        }
+      ]
+    }
+  ]
+}
+
 export default function App() {
   const [userStatus, setUserStatus] = useState({
     user_id: 'demo-user',
@@ -25,8 +85,8 @@ export default function App() {
     }
   })
 
-  const [roadmap, setRoadmap] = useState(null)
-  const [activeLab, setActiveLab] = useState(null)
+  const [roadmap, setRoadmap] = useState(DEFAULT_ROADMAP)
+  const [activeLab, setActiveLab] = useState(DEFAULT_ROADMAP.milestones[0].labs[0])
   const [completedLabs, setCompletedLabs] = useState([])
   const [evaluationResult, setEvaluationResult] = useState(null)
 
@@ -44,11 +104,8 @@ export default function App() {
   const [interviewLabData, setInterviewLabData] = useState(null)
   const [portfolioData, setPortfolioData] = useState(null)
 
-  // Load initial status and default sample roadmap
   useEffect(() => {
     fetchUserStatus()
-    // Auto-generate initial high-yield AWS track on first load
-    handleGenerateRoadmap("Master AWS Bedrock AgentCore and Strands Agent Orchestration in 7 Days", "intermediate", 7)
   }, [])
 
   const fetchUserStatus = async () => {
